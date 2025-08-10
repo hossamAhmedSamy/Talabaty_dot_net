@@ -1,4 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using Talabaty.APIs.Helpers;
+using Talabaty.Core.Repository;
+using Talabaty.Repository;
 using Talabaty.Repository.Data;
 
 namespace Talabaty.APIs
@@ -15,10 +18,10 @@ namespace Talabaty.APIs
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<StoreContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            builder.Services.AddAutoMapper(typeof(MappingProfile));
             var app = builder.Build();
-
             // Ensure the database is created and seeded
             try
             {
@@ -41,6 +44,7 @@ namespace Talabaty.APIs
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            app.UseStaticFiles();
 
             app.UseHttpsRedirection();
             app.UseAuthorization();

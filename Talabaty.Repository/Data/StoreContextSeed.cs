@@ -12,46 +12,39 @@ namespace Talabaty.Repository.Data
     {
         public static async Task SeedAsync(StoreContext dbContext)
         {
-            if(dbContext.Products.Any())
+            if (!dbContext.ProductBrands.Any())
             {
-                var TypesData = File.ReadAllText("..\\Talabaty.Repository\\Data\\DataSeed\\types.json");
-                var Types = JsonSerializer.Deserialize<List<ProductType>>(TypesData);
-                if (Types?.Count > 0)
+                var brandsData = File.ReadAllText("..\\Talabaty.Repository\\Data\\DataSeed\\brands.json");
+                var brands = JsonSerializer.Deserialize<List<ProductBrand>>(brandsData);
+                if (brands?.Count > 0)
                 {
-                    foreach (var Type in Types)
-                    {
-                        await dbContext.Set<ProductType>().AddAsync(Type);
-                    }
+                    await dbContext.Set<ProductBrand>().AddRangeAsync(brands);
                     await dbContext.SaveChangesAsync();
                 }
             }
-            if(dbContext.ProductTypes.Any())
-            {
-                var ProductsData = File.ReadAllText("..\\Talabaty.Repository\\Data\\DataSeed\\products.json");
-                var Products = JsonSerializer.Deserialize<List<Product>>(ProductsData);
-                if (Products?.Count > 0)
-                {
-                    foreach (var Product in Products)
-                    {
-                        await dbContext.Set<Product>().AddAsync(Product);
-                    }
-                    await dbContext.SaveChangesAsync();
 
-                }
-                if (dbContext.ProductBrands.Any())
+            if (!dbContext.ProductTypes.Any())
             {
-                var BrandsData = File.ReadAllText("..\\Talabaty.Repository\\Data\\DataSeed\\brands.json");
-                var Brands = JsonSerializer.Deserialize<List<ProductBrand>>(BrandsData);
-                if (Brands?.Count > 0)
+                var typesData = File.ReadAllText("..\\Talabaty.Repository\\Data\\DataSeed\\types.json");
+                var types = JsonSerializer.Deserialize<List<ProductType>>(typesData);
+                if (types?.Count > 0)
                 {
-                    foreach (var Brand in Brands)
-                    {
-                        await dbContext.Set<ProductBrand>().AddAsync(Brand);
-                    }
+                    await dbContext.Set<ProductType>().AddRangeAsync(types);
                     await dbContext.SaveChangesAsync();
                 }
             }
+
+            if (!dbContext.Products.Any())
+            {
+                var productsData = File.ReadAllText("..\\Talabaty.Repository\\Data\\DataSeed\\products.json");
+                var products = JsonSerializer.Deserialize<List<Product>>(productsData);
+                if (products?.Count > 0)
+                {
+                    await dbContext.Set<Product>().AddRangeAsync(products);
+                    await dbContext.SaveChangesAsync();
+                }
             }
         }
+
     }
 }

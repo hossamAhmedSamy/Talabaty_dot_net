@@ -22,7 +22,7 @@ namespace Talabaty.Repository.Data.Configuration
                    .OnDelete(DeleteBehavior.Cascade);
             builder.Property(P => P.Name).IsRequired().HasMaxLength(100);
             builder.Property(P => P.Description).IsRequired().HasMaxLength(500);
-            builder.Property(P => P.ImageUrl).IsRequired();
+            builder.Property(P => P.PictureUrl).IsRequired();
         }
     }
 }
