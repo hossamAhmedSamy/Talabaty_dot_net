@@ -9,14 +9,19 @@ namespace Talabaty.Core.specifcation
 {
     public class ProductWithBrandAndTypeSpecification : BaseSpecification<Product>
     {
-        public ProductWithBrandAndTypeSpecification():base()
+        // Constructor for getting all products
+        public ProductWithBrandAndTypeSpecification() : base()
         {
             Includes.Add(P => P.ProductType);
             Includes.Add(P => P.ProductBrand);
         }
-        public ProductWithBrandAndTypeSpecification(int id):base(P => P.id == id)
-        {
 
+        // Constructor for getting product by ID
+        public ProductWithBrandAndTypeSpecification(int id) : base(P => P.Id == id)
+        {
+            // Add the same includes for single product retrieval
+            Includes.Add(P => P.ProductType);
+            Includes.Add(P => P.ProductBrand);
         }
     }
 }
