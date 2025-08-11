@@ -14,34 +14,24 @@ namespace Talabaty.APIs.Controllers
     {
         private readonly IGenericRepository<Product> _ProductRepo;
         private readonly IMapper _mapper;
-        public ProductsController(IGenericRepository<Product> ProductRepo , IMapper mapper) 
+        private readonly IGenericRepository<ProductType> _TypeRepo;
+        private readonly IGenericRepository<ProductBrand> _BrandRepo;
+        public ProductsController(IGenericRepository<Product> ProductRepo , IMapper mapper , IGenericRepository<ProductType> TypeRepo , IGenericRepository<ProductBrand> BrandRepo) 
         {
             _ProductRepo = ProductRepo;
             _mapper = mapper;
+            _TypeRepo = TypeRepo;
+            _BrandRepo = BrandRepo;
         }
         // Change the return type of GetAllProducts to IActionResult
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetAllProducts()
+        public async Task<ActionResult<IEnumerable<Product>>> GetAllProducts(string sort)
         {
-            var Spec= new ProductWithBrandAndTypeSpecification();
+            var Spec= new ProductWithBrandAndTypeSpecification(sort);
             var products = await _ProductRepo.GetAllWithSpecAsync(Spec);
             return Ok(products);
         }
         [HttpGet("{id}")]
-/*        public async Task<ActionResult<Product>> GetProductById(int id)
-        {
-            try
-            {
-                var Spec = new ProductWithBrandAndTypeSpecification(id);
-                var Products = await _ProductRepo.GetByIdWithSpecAsync(Spec);
-                var MappedProduct = _mapper.Map<IEnumerable<Product>, IEnumerable<ProductToReturnDto>>((IEnumerable<Product>)Products);
-                return Ok(MappedProduct);
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound($"Product with ID {id} not found.");
-            }
-        }*/
         public async Task<ActionResult<ProductToReturnDto>> GetProductById(int id)
         {
             var spec = new ProductWithBrandAndTypeSpecification(id);
@@ -53,6 +43,17 @@ namespace Talabaty.APIs.Controllers
             var mappedProduct = _mapper.Map<Product, ProductToReturnDto>(product);
             return Ok(mappedProduct);
         }
-
+        [HttpGet("types")]
+        public async Task<ActionResult<IEnumerable<ProductType>>> GetTypes()
+        {
+            var types = await _TypeRepo.GetAllAsync(); 
+            return Ok(types);
+        }
+        [HttpGet("brands")]
+        public async Task<ActionResult<IEnumerable<ProductType>>> GetBrands()
+        {
+            var Brands= await _BrandRepo.GetAllAsync();
+            return Ok(Brands);
+        }
     }
 }

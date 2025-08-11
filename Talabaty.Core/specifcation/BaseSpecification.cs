@@ -12,6 +12,8 @@ namespace Talabaty.Core.specifcation
     {
         public Expression<Func<T, bool>> Criteria { get ; set ; }
         public List<Expression<Func<T, object>>> Includes { get ; set ; } = new List<Expression<Func<T, object>>>();
+        public Expression<Func<T, object>> OrderBy { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public Expression<Func<T, object>> OrderByDesc { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public BaseSpecification()
         {
@@ -21,6 +23,16 @@ namespace Talabaty.Core.specifcation
         {
             Criteria = CriteriaExpression;
             
+        }
+        public void AddOrderBy(Expression<Func<T,object>> orderByExpression)
+        {
+            OrderBy = orderByExpression;
+
+        }
+        public void AddOrderByDesc(Expression<Func<T, object>> orderByDescExpression)
+        {
+            OrderByDesc = orderByDescExpression;
+
         }
     }
 }

@@ -19,6 +19,14 @@ namespace Talabaty.Repository
             {
                 query = query.Where(spec.Criteria);
             }
+            if(spec.OrderBy is not null)
+            {
+                query = query.OrderBy(spec.OrderBy);
+            }
+            if (spec.OrderByDesc is not null)
+            {
+                query = query.OrderBy(spec.OrderByDesc);
+            }
             query = spec.Includes.Aggregate(query, (CurrentQuery, IncludeExpression) => CurrentQuery.Include(IncludeExpression));
             
             return query;

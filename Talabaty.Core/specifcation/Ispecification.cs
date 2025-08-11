@@ -12,5 +12,7 @@ namespace Talabaty.Core.specifcation
     {
         public Expression<Func<T, bool>> Criteria{ get; set; }
         public List<Expression<Func<T, Object>>> Includes{ get; set; }
+        public Expression<Func<T,object>> OrderBy{ get; set; }
+        public Expression<Func<T, object>> OrderByDesc { get; set; }
     }
 }
