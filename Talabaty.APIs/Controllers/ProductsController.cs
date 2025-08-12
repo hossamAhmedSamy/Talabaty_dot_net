@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Talabaty.APIs.DTOs;
+using Talabaty.APIs.Helpers;
 using Talabaty.Core.Entity;
 using Talabaty.Core.Repository;
 using Talabaty.Core.specifcation;
@@ -25,11 +26,17 @@ namespace Talabaty.APIs.Controllers
         }
         // Change the return type of GetAllProducts to IActionResult
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetAllProducts(string? sort, int? BrandId, int? TypeId)
+        public async Task<ActionResult<Pagination<ProductToReturnDto>>> GetAllProducts([FromQuery] ProductSpecParams Params)
         {
-            var Spec= new ProductWithBrandAndTypeSpecification(sort , BrandId, TypeId );
+            var Spec= new ProductWithBrandAndTypeSpecification(Params);
             var products = await _ProductRepo.GetAllWithSpecAsync(Spec);
-            return Ok(products);
+            var ReturnedObject = new Pagination<ProductToReturnDto>()
+            {
+                PageSize = Params.PageSize,
+                PageIndex = Params.PageIndex,
+                Data = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturnDto>>((IReadOnlyList<Product>)products)
+            };
+            return Ok(ReturnedObject);
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductToReturnDto>> GetProductById(int id)

@@ -10,14 +10,14 @@ namespace Talabaty.Core.specifcation
     public class ProductWithBrandAndTypeSpecification : BaseSpecification<Product>
     {
         // Constructor for getting all products
-        public ProductWithBrandAndTypeSpecification(string? sort,int? BrandId,int?TypeId) 
-            :base(P => (!BrandId.HasValue || P.ProductBrandId == BrandId)&&(!TypeId.HasValue || P.ProductTypeId == TypeId))
+        public ProductWithBrandAndTypeSpecification(ProductSpecParams Params) 
+            :base(P => (!Params.BrandId.HasValue || P.ProductBrandId == Params.BrandId)&&(!Params.TypeId.HasValue || P.ProductTypeId == Params.TypeId))
         {
             Includes.Add(P => P.ProductType);
             Includes.Add(P => P.ProductBrand);
-            if(!string.IsNullOrEmpty(sort))
+            if(!string.IsNullOrEmpty(Params.Sort))
             {
-                switch(sort.ToLower())
+                switch(Params.Sort.ToLower())
                 {
                     case "priceasc":
                         AddOrderBy(P => P.Price);
@@ -42,6 +42,8 @@ namespace Talabaty.Core.specifcation
                 // Default sorting by name if no sort parameter is provided
                 AddOrderBy(P => P.Name);
             }
+
+            ApplyPaging(Params.PageSize * (Params.PageIndex - 1), Params.PageSize);
         }
 
         // Constructor for getting product by ID

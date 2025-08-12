@@ -27,10 +27,13 @@ namespace Talabaty.Repository
             {
                 query = query.OrderByDescending(spec.OrderByDesc);
             }
+            if(spec.IsPagingEnabled)
+            {
+                query = query.Skip(spec.Skip).Take(spec.Take);
+            }
             query = spec.Includes.Aggregate(query, (CurrentQuery, IncludeExpression) => CurrentQuery.Include(IncludeExpression));
             
             return query;
-
         }
 
         internal static async Task<IEnumerable<T>> GetQuery<T>(Func<DbSet<T>> set, Ispecification<T> spec) where T : BaseEntity
