@@ -16,19 +16,30 @@ namespace Talabaty.Core.specifcation
             Includes.Add(P => P.ProductBrand);
             if(!string.IsNullOrEmpty(sort))
             {
-                switch(sort)
+                switch(sort.ToLower())
                 {
-                    case "PriceAsc":
+                    case "priceasc":
                         AddOrderBy(P => P.Price);
                         break;
-                    case "PriceDesc":
+                    case "pricedesc":
                         AddOrderByDesc(P => P.Price);
+                        break;
+                    case "name":
+                    case "nameasc":
+                        AddOrderBy(P => P.Name);
+                        break;
+                    case "namedesc":
+                        AddOrderByDesc(P => P.Name);
                         break;
                     default:
                         AddOrderBy(P => P.Name);
-
                         break;
                 }
+            }
+            else
+            {
+                // Default sorting by name if no sort parameter is provided
+                AddOrderBy(P => P.Name);
             }
         }
 

@@ -25,7 +25,7 @@ namespace Talabaty.Repository
             }
             if (spec.OrderByDesc is not null)
             {
-                query = query.OrderBy(spec.OrderByDesc);
+                query = query.OrderByDescending(spec.OrderByDesc);
             }
             query = spec.Includes.Aggregate(query, (CurrentQuery, IncludeExpression) => CurrentQuery.Include(IncludeExpression));
             
