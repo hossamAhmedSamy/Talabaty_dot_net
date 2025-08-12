@@ -25,9 +25,9 @@ namespace Talabaty.APIs.Controllers
         }
         // Change the return type of GetAllProducts to IActionResult
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetAllProducts(string sort)
+        public async Task<ActionResult<IEnumerable<Product>>> GetAllProducts(string? sort, int? BrandId, int? TypeId)
         {
-            var Spec= new ProductWithBrandAndTypeSpecification(sort);
+            var Spec= new ProductWithBrandAndTypeSpecification(sort , BrandId, TypeId );
             var products = await _ProductRepo.GetAllWithSpecAsync(Spec);
             return Ok(products);
         }

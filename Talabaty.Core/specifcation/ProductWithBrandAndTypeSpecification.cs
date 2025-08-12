@@ -10,7 +10,8 @@ namespace Talabaty.Core.specifcation
     public class ProductWithBrandAndTypeSpecification : BaseSpecification<Product>
     {
         // Constructor for getting all products
-        public ProductWithBrandAndTypeSpecification(string sort) : base()
+        public ProductWithBrandAndTypeSpecification(string? sort,int? BrandId,int?TypeId) 
+            :base(P => (!BrandId.HasValue || P.ProductBrandId == BrandId)&&(!TypeId.HasValue || P.ProductTypeId == TypeId))
         {
             Includes.Add(P => P.ProductType);
             Includes.Add(P => P.ProductBrand);
