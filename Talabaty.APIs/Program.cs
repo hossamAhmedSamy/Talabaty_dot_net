@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
 using Talabaty.APIs.Extentions;
 using Talabaty.APIs.Helpers;
 using Talabaty.Core.Repository;
@@ -20,6 +21,12 @@ namespace Talabaty.APIs
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<StoreContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddSingleton<IConnectionMultiplexer>(Options =>
+            {
+                var Connection =
+                    builder.Configuration.GetConnectionString("RedisConnection");
+                return ConnectionMultiplexer.Connect(Connection);
+            });
             builder.Services.AddApplicationServices();
             var app = builder.Build();
             // Ensure the database is created and seeded

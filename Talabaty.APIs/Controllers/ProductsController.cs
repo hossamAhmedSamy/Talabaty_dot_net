@@ -30,6 +30,7 @@ namespace Talabaty.APIs.Controllers
         {
             var Spec= new ProductWithBrandAndTypeSpecification(Params);
             var products = await _ProductRepo.GetAllWithSpecAsync(Spec);
+            var countSpec = new ProductWithBrandAndTypeSpecification(Params);
             var ReturnedObject = new Pagination<ProductToReturnDto>()
             {
                 PageSize = Params.PageSize,

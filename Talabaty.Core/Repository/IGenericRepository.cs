@@ -19,5 +19,7 @@ namespace Talabaty.Core.Repository
 
         Task<IEnumerable<T>> GetAllWithSpecAsync(Ispecification<T> Spec);
         Task<T> GetByIdWithSpecAsync(Ispecification<T> Spec);
+
+        Task<int> GetCountWithSpecAsync(Ispecification<T> Spec);
     }
 }

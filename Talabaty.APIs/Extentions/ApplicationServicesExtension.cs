@@ -16,6 +16,7 @@ namespace Talabaty.APIs.Extentions
         {
             Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             Services.AddAutoMapper(typeof(MappingProfile));
+            Services.AddScoped(typeof(IBasketRepository), typeof(BasketRepository));
         }
 
     }
